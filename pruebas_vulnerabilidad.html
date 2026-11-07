@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Auditoría de Visibilidad</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 40px; text-align: center; }
+        #estado { font-size: 24px; font-weight: bold; color: green; margin: 20px 0; }
+        #contador { font-size: 20px; }
+    </style>
+</head>
+<body>
+    <h2>Monitor de Sensores de Pestaña</h2>
+    <p>Estado actual del DOM:</p>
+    <div id="estado">ACTIVO (En pantalla)</div>
+    <div id="contador">Veces que se abandonó la página: 0</div>
+
+    <script>
+        let salidas = 0;
+        const estadoDiv = document.getElementById('estado');
+        const contadorDiv = document.getElementById('contador');
+
+        // Escucha el evento exacto que usan los sistemas de evaluación
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                salidas++;
+                estadoDiv.innerText = "OCULTO (Se perdió el foco)";
+                estadoDiv.style.color = "red";
+                contadorDiv.innerText = `Veces que se abandonó la página: ${salidas}`;
+                console.warn(`[Alerta Servidor] Pestaña oculta. Salidas: ${salidas}`);
+            } else {
+                estadoDiv.innerText = "ACTIVO (En pantalla)";
+                estadoDiv.style.color = "green";
+            }
+        });
+    </script>
+</body>
+</html>
